@@ -25,7 +25,7 @@ html, body {
 	width: 960px;
 }
 
-a { color: #DB6650; }
+a { color: #DB6650; cursor: pointer; }
 a:hover { text-decoration: underline; }
 
 table {

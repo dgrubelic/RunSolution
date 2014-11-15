@@ -27,34 +27,36 @@
 
 		<!-- Angular templates -->
 		<script type="text/ng-template" id="/views/session/list.html">
-		<table>
-			<thead>
-				<tr>
-					<th><a ng-click="sortBy('id')">ID</a></th>
-					<th><a ng-click="sortBy('start_time')">Start time</a></th>
-					<th><a ng-click="sortBy('end_time')">End time</a></th>
-					<th><a ng-click="sortBy('duration')">Duration</a></th>
-					<th><a ng-click="sortBy('distance')">Distance</a></th>
-					<th>Sport type</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="session in sessionList" ng-click="selectSession(session)">
-					<td><a href="#/session/{{session.id}}">{{session.id}}</a></td>
-					<td>{{session.start_time | date:'dd.MM.yyyy, H:mm'}}</td>
-					<td>{{session.end_time | date:'dd.MM.yyyy, H:mm'}}</td>
-					<td>{{session.duration | duration}}</td>
-					<td>{{session.distance | distance}}</td>
-					<td>{{session.sport_type_id}}</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="session-list" ng-show="sessionList.length">	
+			<table>
+				<thead>
+					<tr>
+						<th><a ng-click="sortBy('id')">ID</a></th>
+						<th><a ng-click="sortBy('start_time')">Start time</a></th>
+						<th><a ng-click="sortBy('end_time')">End time</a></th>
+						<th><a ng-click="sortBy('duration')">Duration</a></th>
+						<th><a ng-click="sortBy('distance')">Distance</a></th>
+						<th>Sport type</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="session in sessionList" ng-click="selectSession(session)">
+						<td><a href="#/session/{{session.id}}">{{session.id}}</a></td>
+						<td>{{session.start_time | date:'dd.MM.yyyy, H:mm'}}</td>
+						<td>{{session.end_time | date:'dd.MM.yyyy, H:mm'}}</td>
+						<td>{{session.duration | duration}}</td>
+						<td>{{session.distance | distance}}</td>
+						<td>{{session.sport_type_id}}</td>
+					</tr>
+				</tbody>
+			</table>
 
-		<paging paging="pagingData" on-page-change="changePage()"></paging>
+			<paging paging="pagingData" on-page-change="changePage()"></paging>
+		</div>
 		</script>
 
 		<script type="text/ng-template" id="/views/session/details.html">
-		<a href="#/session">Back</a>
+		<a href="#/session?page={{lastPage}}">Back</a>
 		<h1>{{session}}</h1>
 		</script>
 </body>

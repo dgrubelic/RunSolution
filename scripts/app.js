@@ -49,12 +49,25 @@
 		}
 	}]);
 
-	app.service('SessionRepository', ['Repository', function (Repository) {
+	app.service('SessionRepository', ['$location', 'Repository', function ($location, Repository) {
+		var lastPage = 1;
+
 		var SessionRepository = {
+			getLastPage: function () {
+				return lastPage;
+			},
+
 			getList: function (pagination) {
 				return Repository.get('/run_sessions.json', pagination).then(function (response) {
 					var meta = response.data.meta;
 
+					// Update last page
+					lastPage = meta.pagination.page;
+
+					// Update url query parameters
+					$location.search('page', meta.pagination.page);
+
+					// pagination.page 			= meta.pagination.page;
 					pagination.per_page 		= meta.pagination.per_page;
 					pagination.available_pages 	= meta.pagination.available_pages;
 					pagination.total 			= meta.pagination.total;
@@ -120,7 +133,7 @@
 				scope.pages = [];
 
 				scope.previousPage = function () {
-					var currentPage = scope.paging.page;
+					var currentPage = parseInt(scope.paging.page, 10);
 					if (currentPage > 1) {
 						currentPage -= 1;
 					}
@@ -129,7 +142,7 @@
 				};
 
 				scope.nextPage = function () {
-					var currentPage = scope.paging.page;
+					var currentPage = parseInt(scope.paging.page, 10);
 					currentPage += 1;
 
 					scope.changePage(currentPage);
@@ -272,7 +285,12 @@
 	});
 	
 	app.controller('SessionListController', ['$scope', '$location', 'SessionRepository', 'Pagination', function ($scope, $location, SessionRepository, Pagination) {
+		if ($location.$$search.page) {
+			Pagination.page = parseInt($location.$$search.page, 10);
+		}
+
 		$scope.pagingData 	= Pagination;
+
 
 		$scope.changePage = function () {
 			loadSessions();
@@ -283,6 +301,16 @@
 		}
 
 		$scope.sortBy = function(sortBy) {
+			if ($scope.pagingData.sort_by === sortBy) {
+				if ($scope.pagingData.order === 'desc') {
+					$scope.pagingData.order = 'asc';
+				} else {
+					$scope.pagingData.order = 'desc';
+				}
+			} else {
+				$scope.pagingData.order = 'desc';
+			}
+
 			$scope.pagingData.sort_by = sortBy;
 			loadSessions();
 		}
@@ -297,7 +325,9 @@
 		loadSessions();
 	}]);
 
-	app.controller('SessionController', ['$scope', '$routeParams', 'SessionRepository', function ($scope, $routeParams, SessionRepository) {
+	app.controller('SessionController', ['$scope', '$location', '$routeParams', 'SessionRepository', function ($scope, $location, $routeParams, SessionRepository) {
+		$scope.lastPage = SessionRepository.getLastPage();
+
 		SessionRepository.getSession($routeParams.session_id).then(function (session) {
 			$scope.session = session;
 		});
