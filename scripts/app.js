@@ -43,11 +43,7 @@
 		return {
 			get: function (url, params) {
 				return $http.get(api_domain + url, {
-					params: {
-						meta: {
-							pagination: params
-						}
-					}
+					params: params
 				});
 			}
 		}
@@ -56,11 +52,7 @@
 	app.service('SessionRepository', ['Repository', function (Repository) {
 		var SessionRepository = {
 			getList: function (pagination) {
-				return Repository.get('/run_sessions.json', {
-					page: 		pagination.page,
-					sort_by: 	pagination.sort_by,
-					order: 		pagination.order
-				}).then(function (response) {
+				return Repository.get('/run_sessions.json', pagination).then(function (response) {
 					var meta = response.data.meta;
 
 					pagination.per_page 		= meta.pagination.per_page;
@@ -94,7 +86,7 @@
 			this.available_pages 	= 1;
 			this.total 				= 0;
 			this.per_page 			= 15;
-			this.sort_by 			= 'started_at';
+			this.sort_by 			= 'start_time';
 			this.order 				= 'desc';
 		};
 
