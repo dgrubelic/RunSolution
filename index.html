@@ -4,16 +4,15 @@
 		<meta charset="utf-8">
 		<title></title>
 		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width">
-		<link rel="stylesheet" href="styles/reset.css">	
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<link rel="stylesheet" href="styles/main.css">
 	</head>
 	<body ng-app="runtasticContestApp">
-		<div class="header">
-			<h3 class="text-muted">Runtastic solution</h3>
-		</div>
-
 		<div id="app" class="container">
+			<div class="header">
+				<h3 class="text-muted">Runtastic solution</h3>
+			</div>
+
 			<div ng-view=""></div>
 		</div>
 
@@ -24,10 +23,9 @@
 		<script src="scripts/app.js"></script>
 
 
-
 		<!-- Angular templates -->
 		<script type="text/ng-template" id="/views/session/list.html">
-		<div class="session-list" ng-show="sessionList.length">	
+		<div class="session-list" ng-show="sessionList">	
 			<table>
 				<thead>
 					<tr>
@@ -36,7 +34,8 @@
 						<th><a ng-click="sortBy('end_time')">End time</a></th>
 						<th><a ng-click="sortBy('duration')">Duration</a></th>
 						<th><a ng-click="sortBy('distance')">Distance</a></th>
-						<th>Sport type</th>
+						<th><a ng-click="sortBy('encoded_trace')">Has trace</a></th>
+						<th><a ng-click="sortBy('sport_type_id')">Sport type</a></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -46,18 +45,38 @@
 						<td>{{session.end_time | date:'dd.MM.yyyy, H:mm'}}</td>
 						<td>{{session.duration | duration}}</td>
 						<td>{{session.distance | distance}}</td>
+						<td>
+							<span ng-show="session.encoded_trace">Yes</span>
+							<span ng-show="!session.encoded_trace">No</span>
+						</td>
 						<td>{{session.sport_type_id}}</td>
 					</tr>
 				</tbody>
 			</table>
 
-			<paging paging="pagingData" on-page-change="changePage()"></paging>
+			<div class="content">
+				<paging paging="pagingData" on-page-change="changePage()"></paging>
+			</div>
 		</div>
 		</script>
 
 		<script type="text/ng-template" id="/views/session/details.html">
-		<a href="#/session?page={{lastPage}}">Back</a>
-		<h1>{{session}}</h1>
+		<div class="details content">
+			<div class="vertical content">
+				<a href="#/session?page={{lastPage}}" class="button empty">Back</a>
+			</div>
+
+			<div ng-show="session">
+				<h4>
+					This session lasted 
+						from {{session.start_time | date:'dd.MM.yyyy, H:mm'}} 
+						to {{session.end_time | date:'dd.MM.yyyy, H:mm'}}
+				</h4>
+
+				<p>Total duration: {{session.duration | duration }}</p>
+				<p>Total distance: {{session.distance | distance }}</p>
+			</div>
+		</div>
 		</script>
 </body>
 </html>

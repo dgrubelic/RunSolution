@@ -1,12 +1,65 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* End of reset. */
+
 html, body {
 	font-family: 'Helvetica Neue';
 	font-size: 13px;
 	line-height: 1.5em;
+	zoom: 1;
 }
 
 #app {
 	margin: 0 auto;
-	width: 960px;
+	position: relative;
+	/*width: 960px;*/
 }
 
 .header {
@@ -22,8 +75,14 @@ html, body {
 	margin-top: 0;
 	margin-bottom: 0;
 	padding: 2rem 0 1rem;
-	width: 960px;
 }
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.3em; }
+h4 { font-size: 1em; }
+h5 { font-size: .7em; }
+h6 { font-size: .5em; }
 
 a { color: #DB6650; cursor: pointer; }
 a:hover { text-decoration: underline; }
@@ -60,6 +119,27 @@ table tbody tr {
 table tbody tr:nth-child(even) { background: #f5f5f5; }
 table tbody tr:nth-child(odd) { background: #fff; }
 
+.button {
+	background: #DB6650;
+	border-radius: 3px;
+	padding: .5rem 1rem;
+	text-decoration: none;
+}
+
+.button.empty {
+	background: #fff;
+	border: 1px solid #eee;
+	color: #DB6650;
+}
+
+.content {
+	padding: 1rem;
+}
+
+.vertical.content {
+	padding: 1rem 0;
+}
+
 .paging {
 	list-style-type: none;
 	list-style-position: inside;
@@ -67,20 +147,26 @@ table tbody tr:nth-child(odd) { background: #fff; }
 	overflow: hidden;
 }
 
-.paging .summary {
-	padding: .5rem 0;
+.paging .summary,
+.pagging .pages {
+	padding: .5rem;
 }
 
-.pading .pages {
+/*.paging .summary {
+	padding: .5rem 0;
+}*/
+
+.paging .pages {
 	overflow: hidden;
+	text-align: center;
 }
 
 .paging .pages li {
 	border: 1px solid #eee;
 	border-radius: 3px;
+	color: #DB6650;
 	cursor: pointer;
 	display: inline-block;
-	float:left;
 	margin: 0 .5rem .5rem 0;
 	padding: .3rem .7rem;
 }
@@ -89,43 +175,59 @@ table tbody tr:nth-child(odd) { background: #fff; }
 	display: block;
 }
 
-.paging .pages li.current a {
+.paging .pages li.current {
 	color: #333;
 	cursor: default;
 	text-decoration: none;
 }
 
-/* Customize container */
-@media (max-width: 768px) {
-	#app {
-		max-width: 730px;
-	}
-}
-
-/* Customize container */
-@media (max-width: 640px) {
-	#app {
-		max-width: 600px;
-	}
-}
-
-@media (max-width: 480px) {
-	#app {
-		max-width: 400px;
-	}
-}
-
-
-
 /* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-	/* Remove the padding we set earlier */
-	.header,
-	.marketing,
-	.footer {
+@media screen and (max-width: 480px) {
+	table td, table th {
+		padding: .3rem .5rem;
 	}
-	/* Space out the masthead */
-	.header {
 
+	.content {
+		padding: .5rem;
+	}
+
+	.vertical.content {
+		padding: .5rem 0;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	#app,
+	.header h3 {
+		width: auto;
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	#app {
+		padding-bottom: 5rem;
+	}
+
+	#app,
+	.header h3 {
+		width: auto;
+	}
+
+	/*.paging {
+		box-shadow: 0 -1px 5px rgba(0,0,0,.2);
+		background: #fff;
+		bottom: 0;
+		left: 0;
+		margin-bottom: 0;
+		position: fixed;
+		width: 100%;
+	}*/
+
+	.paging .pages .previous {
+		float: left;
+	}
+
+	.paging .pages .next {
+		float: right;
 	}
 }

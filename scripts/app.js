@@ -17,7 +17,7 @@
 		'ngSanitize',
 		'ngTouch'
 		])
-		.config(function ($routeProvider, $locationProvider) {
+		.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 			$locationProvider.html5Mode({
 				enabled: false,
 				requireBase: false
@@ -35,9 +35,9 @@
 				.otherwise({
 					redirectTo: '/session'
 				});
-		});
+		}]);
 
-	app.constant('api_domain', 'http://intense-bastion-3210.herokuapp.com');
+	app.constant('api_domain', '//intense-bastion-3210.herokuapp.com');
 
 	app.service('Repository', ['$http', 'api_domain', function ($http, api_domain) {
 		return {
@@ -119,17 +119,17 @@
 				'<div class="paging">',
 					'<h4 class="summary">{{paging.page}} of {{paging.available_pages}}</h4>',
 					'<ul class="pages">',
-						'<li class="previous"><a ng-click="previousPage()">Previous</a></li>',
-						'<li ng-repeat="page in pages" ng-class="{current: (page === paging.page)}">',
-							'<a ng-click="changePage(page)">{{page}}</a>',
+						'<li class="previous" ng-click="previousPage()">Previous</li>',
+						'<li ng-repeat="page in pages" ng-click="changePage(page)" ng-class="{current: (page === paging.page)}">',
+							'{{page}}',
 						'</li>',
-						'<li class="next"><a ng-click="nextPage()">Next</a></li>',
+						'<li class="next" ng-click="nextPage()">Next</li>',
 					'</ul>',
 				'</div>'
 			].join(''),
 
 			link: function (scope, element, attrs) {
-				var totalPagesRendered = 10;
+				var totalPagesRendered = 7;
 				scope.pages = [];
 
 				scope.previousPage = function () {
@@ -189,7 +189,7 @@
 							scope.pages.push(1);
 							scope.pages.push(2);
 
-							for (var i = (scope.paging.page - 2); i <= (scope.paging.page + 2); i++) {
+							for (var i = (scope.paging.page - 1); i <= (scope.paging.page + 1); i++) {
 								scope.pages.push(i);
 							}
 
@@ -206,7 +206,7 @@
 		};
 	}]);
 
-	app.filter('duration', function () {
+	app.filter('duration', [function () {
 		return function (input) {
 			var totalSeconds = input / 1000;
 
@@ -251,9 +251,9 @@
 
 			return output;
 		}
-	});
+	}]);
 
-	app.filter('distance', function () {
+	app.filter('distance', [function () {
 		return function (input) {
 			var totalMeters = input;
 
@@ -282,7 +282,7 @@
 
 			return output;
 		}
-	});
+	}]);
 	
 	app.controller('SessionListController', ['$scope', '$location', 'SessionRepository', 'Pagination', function ($scope, $location, SessionRepository, Pagination) {
 		if ($location.$$search.page) {
