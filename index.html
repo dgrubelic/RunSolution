@@ -67,14 +67,20 @@
 			</div>
 
 			<div ng-show="session">
-				<h4>
+				<h3>Session: {{session.id}}</h3>
+				<p>
 					This session lasted 
 						from {{session.start_time | date:'dd.MM.yyyy, H:mm'}} 
 						to {{session.end_time | date:'dd.MM.yyyy, H:mm'}}
-				</h4>
+				</p>
 
 				<p>Total duration: {{session.duration | duration }}</p>
 				<p>Total distance: {{session.distance | distance }}</p>
+				<p>Sport type: {{session.sport_type_id }}</p>
+				<p>Has map trace: 
+					<span ng-show="session.encoded_trace">Yes</span>
+					<span ng-show="!session.encoded_trace">No</span>
+				</p>
 			</div>
 		</div>
 		</script>
